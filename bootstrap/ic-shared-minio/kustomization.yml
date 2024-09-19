@@ -20,4 +20,3 @@ resources:
 # wave 2
 - create-data-connection.yml
 - create-buckets.yaml
-- create-llm-buckets.yaml
