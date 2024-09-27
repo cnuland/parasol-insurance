@@ -35,12 +35,16 @@ spec:
         args:
         - -ec
         - |-
-          curl -LO https://rhods-public.s3.amazonaws.com/demo-models/granite-flux-capacitor+/pytorch_model.bin
+          curl -LO https://rhods-public.s3.amazonaws.com/demo-models/granite-flux-capacitor+/model-00001-of-00003.safetensors
+          curl -LO https://rhods-public.s3.amazonaws.com/demo-models/granite-flux-capacitor+/model-00002-of-00003.safetensors
+          curl -LO https://rhods-public.s3.amazonaws.com/demo-models/granite-flux-capacitor+/model-00003-of-00003.safetensors
           curl -LO https://rhods-public.s3.amazonaws.com/demo-models/granite-flux-capacitor+/config.json
+          curl -LO https://rhods-public.s3.amazonaws.com/demo-models/granite-flux-capacitor+/generation_config.json
           curl -LO https://rhods-public.s3.amazonaws.com/demo-models/granite-flux-capacitor+/special_tokens_map.json
           curl -LO https://rhods-public.s3.amazonaws.com/demo-models/granite-flux-capacitor+/tokenizer_config.json
+          curl -LO https://rhods-public.s3.amazonaws.com/demo-models/granite-flux-capacitor+/model.safetensors.index.json
           curl -LO https://rhods-public.s3.amazonaws.com/demo-models/granite-flux-capacitor+/tokenizer.json
-
+          curl -LO https://rhods-public.s3.amazonaws.com/demo-models/granite-flux-capacitor+/tokenizer.model
           cat << 'EOF' | python3
           import boto3, os
 
@@ -51,10 +55,17 @@ spec:
 
           # Create the models bucket
           models_bucket_name = "granite"
-          s3.create_bucket(Bucket=models_bucket_name)
+          if models_bucket_name not in [bu["Name"] for bu in s3.list_buckets()["Buckets"]]:
+              s3.create_bucket(Bucket=models_bucket_name)
 
           # uploading to minio
-          filename = "pytorch_model.bin"
+          filename = "model-00001-of-00003.safetensors"
+          with open(filename, "rb") as f:
+              s3.upload_fileobj(f, "granite", f'{filename}')
+          filename = "model-00002-of-00003.safetensors"
+          with open(filename, "rb") as f:
+              s3.upload_fileobj(f, "granite", f'{filename}')
+          filename = "model-00003-of-00003.safetensors"
           with open(filename, "rb") as f:
               s3.upload_fileobj(f, "granite", f'{filename}')
           filename = "config.json"
@@ -67,6 +78,15 @@ spec:
           with open(filename, "rb") as f:
               s3.upload_fileobj(f, "granite", f'{filename}')
           filename = "tokenizer.json"
+          with open(filename, "rb") as f:
+              s3.upload_fileobj(f, "granite", f'{filename}')
+          filename = "model.safetensors.index.json"
+          with open(filename, "rb") as f:
+              s3.upload_fileobj(f, "granite", f'{filename}')
+          filename = "generation_config.json"
+          with open(filename, "rb") as f:
+              s3.upload_fileobj(f, "granite", f'{filename}')
+          filename = "tokenizer.model"
           with open(filename, "rb") as f:
               s3.upload_fileobj(f, "granite", f'{filename}')
 
