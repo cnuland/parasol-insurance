@@ -1,58 +1,106 @@
----
-apiVersion: v1
-kind: ConfigMap
+apiVersion: batch/v1
+kind: Job
 metadata:
-  name: milvus-backup-configmap
+  name: create-milvus-backup-config
+  namespace: ic-shared-milvus
   annotations:
     argocd.argoproj.io/sync-wave: "1"
-  labels:
-    app: ic-shared-milvus
-    argocd.argoproj.io/managed-by: openshift-gitops
-data:
-  backup.yaml: >-
-    log:
-      level: info
-      console: true
-      file:
-        rootPath: "/var/log/milvus-backup/logs"
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
+spec:
+  backoffLimit: 4
+  template:
+    spec:
+      serviceAccount: project-creator
+      serviceAccountName: project-creator
+      containers:
+      - name: create-and-apply-backup-config
+        image: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/bash"]
+        args:
+        - -ec
+        - |-
+        
+          echo -n 'Waiting for minio-root-user secret'
+          while [ -z "\$(oc get secret -n ic-shared-minio minio-root-user -oname 2>/dev/null)" ]; do
+            echo -n .
+            sleep 5
+          done; echo
 
-    http:
-      simpleResponse: true
 
-    milvus:
-      address: vectordb-milvus.ic-shared-milvus.svc.cluster.local
-      port: 19530
-      authorizationEnabled: true
-      tlsMode: 0
-      user: "root"
-      password: "Milvus"
+          # Get needed variables
+          MINIO_ROOT_USER=$(oc get secret minio-root-user -n ic-shared-minio -o template --template '{{.data.MINIO_ROOT_USER|base64decode}}')
+          MINIO_ROOT_PASSWORD=$(oc get secret minio-root-user -n ic-shared-minio -o template --template '{{.data.MINIO_ROOT_PASSWORD|base64decode}}')
+          MINIO_HOST=https://$(oc get route minio-s3 -n ic-shared-minio -o template --template '{{.spec.host}}')
 
-    minio:
-      storageType: "minio"
-      address: minio.ic-shared-minio.svc.cluster.local
-      port: 9000
-      accessKeyID: minio
-      secretAccessKey: minio123
-      useSSL: false
-      useIAM: false
-      iamEndpoint: ""
-      bucketName: "milvus-bucket"
-      rootPath: "file"      
-      backupBucketName: "milvus-backup-bucket"
-      backupRootPath: "backup"
+          echo "Generating and apply resources for $USER_NAME..."
 
-    backup:
-      maxSegmentGroupSize: 2G
+          # Create projects
+          cat << EOF | oc apply -f-
+          --
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: milvus-backup-configmap
+            namespace: ic-shared-milvus
+            annotations:
+              argocd.argoproj.io/sync-wave: "1"
+            labels:
+              app: ic-shared-milvus
+              argocd.argoproj.io/managed-by: openshift-gitops
+          data:
+            backup.yaml: >-
+              log:
+                level: info
+                console: true
+                file:
+                  rootPath: "/var/log/milvus-backup/logs"
 
-      parallelism: 
-        backupCollection: 4
-        copydata: 128
-        restoreCollection: 2
+              http:
+                simpleResponse: true
+
+              milvus:
+                address: vectordb-milvus.ic-shared-milvus.svc.cluster.local
+                port: 19530
+                authorizationEnabled: true
+                tlsMode: 0
+                user: "root"
+                password: "Milvus"
+
+              minio:
+                storageType: "minio"
+                address: $MINIO_HOST
+                port: 9000
+                accessKeyID: minio
+                secretAccessKey: $MINIO_ROOT_PASSWORD
+                useSSL: false
+                useIAM: false
+                iamEndpoint: ""
+                bucketName: "milvus-bucket"
+                rootPath: "file"      
+                backupBucketName: "milvus-backup-bucket"
+                backupRootPath: "backup"
+
+              backup:
+                maxSegmentGroupSize: 2G
+
+                parallelism: 
+                  backupCollection: 4
+                  copydata: 128
+                  restoreCollection: 2
+                
+                keepTempFiles: false
+                
+                gcPause:
+                  enable: true
+                  seconds: 7200
+                  address: http://vectordb-milvus.ic-shared-milvus.svc.cluster.local:9091
       
-      keepTempFiles: false
-      
-      gcPause:
-        enable: true
-        seconds: 7200
-        address: http://vectordb-milvus.ic-shared-milvus.svc.cluster.local:9091
-      
+          EOF
+
+          sleep 20
+          
+          done
+      restartPolicy: Never

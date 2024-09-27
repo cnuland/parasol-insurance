@@ -11,6 +11,7 @@ resources:
 # wave 0
 - namespace.yml
 # wave 1
+- project-manager.yaml
 - milvus-backup-config.yaml
 - milvus-config.yaml
 - milvus-pvc.yaml

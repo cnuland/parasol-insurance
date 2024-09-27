@@ -1,107 +1,154 @@
----
-apiVersion: v1
-kind: ConfigMap
+apiVersion: batch/v1
+kind: Job
 metadata:
-  name: vectordb-milvus
-  labels:
-    app: ic-shared-milvus
-    argocd.argoproj.io/managed-by: openshift-gitops
+  name: create-mulvus-config
+  namespace: ic-shared-milvus
   annotations:
     argocd.argoproj.io/sync-wave: "1"
-data:
-  default.yaml: |-
-    # Copyright (C) 2019-2021 Zilliz. All rights reserved.
-    #
-    # Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance
-    # with the License. You may obtain a copy of the License at
-    #
-    # http://www.apache.org/licenses/LICENSE-2.0
-    #
-    # Unless required by applicable law or agreed to in writing, software distributed under the License
-    # is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
-    # or implied. See the License for the specific language governing permissions and limitations under the License.
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
+spec:
+  backoffLimit: 4
+  template:
+    spec:
+      serviceAccount: project-creator
+      serviceAccountName: project-creator
+      containers:
+      - name: create-and-apply-config
+        image: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/bash"]
+        args:
+        - -ec
+        - |-
+          
+          echo -n 'Waiting for minio-root-user secret'
+          while [ -z "\$(oc get secret -n ic-shared-minio minio-root-user -oname 2>/dev/null)" ]; do
+            echo -n .
+            sleep 5
+          done; echo
 
-    etcd:
-      endpoints:
-        - vectordb-etcd:2379
+          # Get needed variables
+          MINIO_ROOT_USER=$(oc get secret minio-root-user -n ic-shared-minio -o template --template '{{.data.MINIO_ROOT_USER|base64decode}}')
+          MINIO_ROOT_PASSWORD=$(oc get secret minio-root-user -n ic-shared-minio -o template --template '{{.data.MINIO_ROOT_PASSWORD|base64decode}}')
+          MINIO_HOST=https://$(oc get route minio-s3 -n ic-shared-minio -o template --template '{{.spec.host}}')
 
-    metastore:
-      type: etcd
+          echo "Generating and apply resources for $USER_NAME..."
 
-    minio:
-      address: minio.ic-shared-minio.svc.cluster.local
-      port: 9000
-      accessKeyID: minio
-      secretAccessKey: minio123
-      useSSL: false
-      bucketName: milvus-bucket
-      rootPath: file
-      useIAM: false
-      iamEndpoint: 
-      region: 
-      useVirtualHost: false
+          # Create projects
+          cat << EOF | oc apply -f-
+          ---
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: vectordb-milvus
+            namespace: ic-shared-milvus
+            labels:
+              app: ic-shared-milvus
+              argocd.argoproj.io/managed-by: openshift-gitops
+            annotations:
+              argocd.argoproj.io/sync-wave: "1"
+          data:
+            default.yaml: |-
+              # Copyright (C) 2019-2021 Zilliz. All rights reserved.
+              #
+              # Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance
+              # with the License. You may obtain a copy of the License at
+              #
+              # http://www.apache.org/licenses/LICENSE-2.0
+              #
+              # Unless required by applicable law or agreed to in writing, software distributed under the License
+              # is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+              # or implied. See the License for the specific language governing permissions and limitations under the License.
 
-    mq:
-      type: rocksmq
+              etcd:
+                endpoints:
+                  - vectordb-etcd:2379
 
-    messageQueue: rocksmq
+              metastore:
+                type: etcd
 
-    rootCoord:
-      address: localhost
-      port: 53100
-      enableActiveStandby: false  # Enable rootcoord active-standby
+              minio:
+                address: $MINIO_HOST
+                port: 9000
+                accessKeyID: minio
+                secretAccessKey: $MINIO_ROOT_PASSWORD
+                useSSL: false
+                bucketName: milvus-bucket
+                rootPath: file
+                useIAM: false
+                iamEndpoint: 
+                region: 
+                useVirtualHost: false
 
-    proxy:
-      port: 19530
-      internalPort: 19529
+              mq:
+                type: rocksmq
 
-    queryCoord:
-      address: localhost
-      port: 19531
-      enableActiveStandby: false  # Enable querycoord active-standby
+              messageQueue: rocksmq
 
-    queryNode:
-      port: 21123
-      enableDisk: true # Enable querynode load disk index, and search on disk index
+              rootCoord:
+                address: localhost
+                port: 53100
+                enableActiveStandby: false  # Enable rootcoord active-standby
 
-    indexCoord:
-      address: localhost
-      port: 31000
-      enableActiveStandby: false  # Enable indexcoord active-standby
+              proxy:
+                port: 19530
+                internalPort: 19529
 
-    indexNode:
-      port: 21121
-      enableDisk: true # Enable index node build disk vector index
+              queryCoord:
+                address: localhost
+                port: 19531
+                enableActiveStandby: false  # Enable querycoord active-standby
 
-    dataCoord:
-      address: localhost
-      port: 13333
-      enableActiveStandby: false  # Enable datacoord active-standby
+              queryNode:
+                port: 21123
+                enableDisk: true # Enable querynode load disk index, and search on disk index
 
-    dataNode:
-      port: 21124
+              indexCoord:
+                address: localhost
+                port: 31000
+                enableActiveStandby: false  # Enable indexcoord active-standby
 
-    log:
-      level: info
-      file:
-        rootPath: ""
-        maxSize: 300
-        maxAge: 10
-        maxBackups: 20
-      format: text
+              indexNode:
+                port: 21121
+                enableDisk: true # Enable index node build disk vector index
 
-  user.yaml: |-
-    #    For example enable rest http for milvus proxy
-    #    proxy:
-    #      http:
-    #        enabled: true
-    ##  Enable tlsMode and set the tls cert and key
-    #  tls:
-    #    serverPemPath: /etc/milvus/certs/tls.crt
-    #    serverKeyPath: /etc/milvus/certs/tls.key
-    #   common:
-    #     security:
-    #       tlsMode: 1
-    common:
-      security:
-        authorizationEnabled: true
+              dataCoord:
+                address: localhost
+                port: 13333
+                enableActiveStandby: false  # Enable datacoord active-standby
+
+              dataNode:
+                port: 21124
+
+              log:
+                level: info
+                file:
+                  rootPath: ""
+                  maxSize: 300
+                  maxAge: 10
+                  maxBackups: 20
+                format: text
+
+            user.yaml: |-
+              #    For example enable rest http for milvus proxy
+              #    proxy:
+              #      http:
+              #        enabled: true
+              ##  Enable tlsMode and set the tls cert and key
+              #  tls:
+              #    serverPemPath: /etc/milvus/certs/tls.crt
+              #    serverKeyPath: /etc/milvus/certs/tls.key
+              #   common:
+              #     security:
+              #       tlsMode: 1
+              common:
+                security:
+                  authorizationEnabled: true
+          EOF
+
+          sleep 20
+          
+          done
+      restartPolicy: Never
