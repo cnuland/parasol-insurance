@@ -157,6 +157,7 @@ spec:
                     echo "Minio pass: $MINIO_ROOT_PASSWORD"
                     echo "Internal service url: http://minio.ic-shared-minio.svc.cluster.local:9000/"
                     cat << EOF | oc apply -f-
+                    ---
                     apiVersion: v1
                     kind: Secret
                     metadata:
@@ -174,6 +175,24 @@ spec:
                       AWS_DEFAULT_REGION: us
                       AWS_S3_ENDPOINT: http://minio.ic-shared-minio.svc:9000
                       AWS_S3_BUCKET: $USER_NAME
+                    ---
+                    apiVersion: v1
+                    kind: Secret
+                    metadata:
+                      name: aws-connection-shared-minio---model
+                      labels:
+                        opendatahub.io/dashboard: "true"
+                        opendatahub.io/managed: "true"
+                      annotations:
+                        opendatahub.io/connection-type: s3
+                        openshift.io/display-name: Shared Minio - model
+                    type: Opaque
+                    stringData:
+                      AWS_ACCESS_KEY_ID: $MINIO_ROOT_USER
+                      AWS_SECRET_ACCESS_KEY: $MINIO_ROOT_PASSWORD
+                      AWS_DEFAULT_REGION: us
+                      AWS_S3_ENDPOINT: http://minio.ic-shared-minio.svc:9000
+                      AWS_S3_BUCKET: granite
                     EOF
                   command:
                   - /bin/bash

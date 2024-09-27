@@ -61,34 +61,34 @@ spec:
           # uploading to minio
           filename = "model-00001-of-00003.safetensors"
           with open(filename, "rb") as f:
-              s3.upload_fileobj(f, "granite", f'{filename}')
+              s3.upload_fileobj(f, "granite", f'granite-7b/{filename}')
           filename = "model-00002-of-00003.safetensors"
           with open(filename, "rb") as f:
-              s3.upload_fileobj(f, "granite", f'{filename}')
+              s3.upload_fileobj(f, "granite",f'granite-7b/{filename}')
           filename = "model-00003-of-00003.safetensors"
           with open(filename, "rb") as f:
-              s3.upload_fileobj(f, "granite", f'{filename}')
+              s3.upload_fileobj(f, "granite", f'granite-7b/{filename}')
           filename = "config.json"
           with open(filename, "rb") as f:
-              s3.upload_fileobj(f, "granite", f'{filename}')
+              s3.upload_fileobj(f, "granite", f'granite-7b/{filename}')
           filename = "special_tokens_map.json"
           with open(filename, "rb") as f:
-              s3.upload_fileobj(f, "granite", f'{filename}')
+              s3.upload_fileobj(f, "granite", f'granite-7b/{filename}')
           filename = "tokenizer_config.json"
           with open(filename, "rb") as f:
-              s3.upload_fileobj(f, "granite", f'{filename}')
+              s3.upload_fileobj(f, "granite", f'granite-7b/{filename}')
           filename = "tokenizer.json"
           with open(filename, "rb") as f:
-              s3.upload_fileobj(f, "granite", f'{filename}')
+              s3.upload_fileobj(f, "granite", f'granite-7b/{filename}')
           filename = "model.safetensors.index.json"
           with open(filename, "rb") as f:
-              s3.upload_fileobj(f, "granite", f'{filename}')
+              s3.upload_fileobj(f, "granite", f'granite-7b/{filename}')
           filename = "generation_config.json"
           with open(filename, "rb") as f:
-              s3.upload_fileobj(f, "granite", f'{filename}')
+              s3.upload_fileobj(f, "granite", f'granite-7b/{filename}')
           filename = "tokenizer.model"
           with open(filename, "rb") as f:
-              s3.upload_fileobj(f, "granite", f'{filename}')
+              s3.upload_fileobj(f, "granite", f'granite-7b/{filename}')
 
           EOF
         envFrom:
