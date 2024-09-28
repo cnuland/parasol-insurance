@@ -4,7 +4,7 @@ metadata:
   name: project-creator
   namespace: ic-shared-milvus
   annotations:
-    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-wave: "1"
     argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
 ---
@@ -13,7 +13,7 @@ kind: ClusterRoleBinding
 metadata:
   name: project-creator-binding
   annotations:
-    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-wave: "1"
     argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
 subjects:
