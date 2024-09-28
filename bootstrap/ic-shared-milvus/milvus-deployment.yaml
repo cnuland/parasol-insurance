@@ -11,7 +11,7 @@ metadata:
     argocd.argoproj.io/managed-by: openshift-gitops
     component: "standalone"
   annotations:
-    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-wave: "3"
 spec:
   replicas: 1
   strategy:
@@ -124,7 +124,7 @@ metadata:
     app.kubernetes.io/instance: vectordb
     argocd.argoproj.io/managed-by: openshift-gitops
   annotations:
-    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-wave: "3"
 spec:
   replicas: 1
   selector:

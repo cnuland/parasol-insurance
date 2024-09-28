@@ -4,7 +4,7 @@ metadata:
   name: create-milvus-backup-config
   namespace: ic-shared-milvus
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "2"
     argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
     argocd.argoproj.io/compare-options: IgnoreExtraneous
@@ -22,7 +22,7 @@ spec:
         args:
         - -ec
         - |-
-        
+
           echo -n 'Waiting for minio-root-user secret'
           while [ -z "\$(oc get secret -n ic-shared-minio minio-root-user -oname 2>/dev/null)" ]; do
             echo -n .
@@ -101,6 +101,4 @@ spec:
           EOF
 
           sleep 20
-          
-          done
       restartPolicy: Never

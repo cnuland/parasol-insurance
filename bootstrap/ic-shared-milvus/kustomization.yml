@@ -12,13 +12,14 @@ resources:
 - namespace.yml
 # wave 1
 - project-manager.yaml
-- milvus-backup-config.yaml
-- milvus-config.yaml
 - milvus-pvc.yaml
 # wave 2
+- milvus-backup-config.yaml
+- milvus-config.yaml
+# wave 3
 - milvus-deployment.yaml
 - milvus-services.yaml
 - milvus-backup-deployment.yaml
 - milvus-backup-service.yaml
-# wave 3
+# wave 4
 - restore-collection.yaml

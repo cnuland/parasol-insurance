@@ -9,7 +9,7 @@ metadata:
     argocd.argoproj.io/managed-by: openshift-gitops
   annotations:
     service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
-    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-wave: "3"
 spec:
   type: ClusterIP
   clusterIP: None
