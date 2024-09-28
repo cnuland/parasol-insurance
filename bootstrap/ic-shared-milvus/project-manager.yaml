@@ -3,7 +3,7 @@ kind: ServiceAccount
 metadata:
   name: project-creator
   namespace: ic-shared-milvus
-   annotations:
+  annotations:
     argocd.argoproj.io/sync-wave: "2"
     argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
