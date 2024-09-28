@@ -39,14 +39,12 @@ spec:
 
           # Create projects
           cat << EOF | oc apply -f-
-          --
+          ---
           apiVersion: v1
           kind: ConfigMap
           metadata:
             name: milvus-backup-configmap
             namespace: ic-shared-milvus
-            annotations:
-              argocd.argoproj.io/sync-wave: "1"
             labels:
               app: ic-shared-milvus
               argocd.argoproj.io/managed-by: openshift-gitops
