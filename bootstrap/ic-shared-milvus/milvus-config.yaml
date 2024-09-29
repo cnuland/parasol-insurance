@@ -70,7 +70,7 @@ spec:
                 type: etcd
 
               minio:
-                address: $MINIO_HOST
+                address: minio.ic-shared-minio.svc.cluster.local
                 port: 9000
                 accessKeyID: minio
                 secretAccessKey: $MINIO_ROOT_PASSWORD
