@@ -4,7 +4,7 @@ kind: Job
 metadata:
   name: restore-collection
   annotations:
-    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-wave: "4"
     argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
 spec:
@@ -33,6 +33,14 @@ spec:
         args:
         - -ec
         - |-
+          echo -n 'Waiting for minio-root-user secret'
+          while [ -z "\$(oc get secret -n ic-shared-minio minio-root-user -oname 2>/dev/null)" ]; do
+            echo -n .
+            sleep 5
+          done; echo
+
+          MINIO_ROOT_PASSWORD=$(oc get secret minio-root-user -n ic-shared-minio -o template --template '{{.data.MINIO_ROOT_PASSWORD|base64decode}}')
+
           # Retrieve the backup from the S3 bucket
           curl -LO https://rhods-public.s3.amazonaws.com/parasol-insurance-handbook-backup/backup.tar.gz
           mkdir -p backup && tar xvzf backup.tar.gz -C ./backup
@@ -48,7 +56,7 @@ spec:
           s3 = boto3.client("s3",
                   endpoint_url="http://minio.ic-shared-minio.svc.cluster.local:9000",
                   aws_access_key_id="minio",
-                  aws_secret_access_key="minio123")
+                  aws_secret_access_key=$MINIO_ROOT_PASSWORD)
 
           # Create the milvus buckets
           milvus_bucket_name = "milvus-bucket"
