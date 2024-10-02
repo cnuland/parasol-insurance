@@ -44,7 +44,6 @@ spec:
           curl -LO https://rhods-public.s3.amazonaws.com/demo-models/granite-flux-capacitor+/tokenizer_config.json
           curl -LO https://rhods-public.s3.amazonaws.com/demo-models/granite-flux-capacitor+/model.safetensors.index.json
           curl -LO https://rhods-public.s3.amazonaws.com/demo-models/granite-flux-capacitor+/tokenizer.json
-          curl -LO https://rhods-public.s3.amazonaws.com/demo-models/granite-flux-capacitor+/tokenizer.model
           cat << 'EOF' | python3
           import boto3, os
 

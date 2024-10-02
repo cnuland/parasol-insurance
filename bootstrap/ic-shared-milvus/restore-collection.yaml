@@ -11,6 +11,8 @@ spec:
   backoffLimit: 4
   template:
     spec:
+      serviceAccount: project-creator
+      serviceAccountName: project-creator
       initContainers:
       - name: wait-for-milvus-backup
         image: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
