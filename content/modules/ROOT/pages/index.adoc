@@ -28,10 +28,11 @@ a|- We describe what the desired end state looks like.
 - Describe overall user experience and underlying architecture.
 - Share mockups for better visualization
 
-|Connection and Setup |5 | Hands-On
+|Connection and Setup |15 | Hands-On
 a|- Attendees get connected
 - help validate environment health
 - access the playpen project
+- deploy a granite model finetuned from RHEL AI using OpenShift AI
 
 |LLM |20 | Hands-On
 a|- summarization check
@@ -39,11 +40,6 @@ a|- summarization check
 - Model Comparison check and choice
 - prompt engineering exercise
 - confidence-check pipeline
-
-|Image Processing |20 | Hands-On
-a|- car recognition checks
-- re-training exercise
-- model deployment
 
 |Web App  |20 | Hands-On
 a|- deployment
@@ -53,6 +49,11 @@ a|- deployment
 |Productization  |5 | Presentation + discussion
 a|- What else could we add that would have value?
 - What else could we do following the same patterns?
+
+|Image Processing (Optional) |20 | Hands-On
+a|- car recognition checks
+- re-training exercise
+- model deployment
 
 |=========================================================
 

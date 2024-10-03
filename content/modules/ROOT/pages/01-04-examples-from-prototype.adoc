@@ -24,20 +24,6 @@ image::01/proto-info-extract.png[ info extraction]
 [.bordershadow]
 image::01/proto-sentiment-analysis.png[]
 
-== Using image recognition to frame vehicle(s) in pictures
-
-* Analyse images provided by customer:
-+
-[.bordershadow]
-image::01/proto-car-recog.png[]
-
-== Using image recognition to detect damage
-
-* Assessment of damage based on picture:
-+
-[.bordershadow]
-image::01/proto-accident-grading.png[]
-
 == Web Application to review/process claims
 
 * Have an application that ties in these tools together and enables users to process the incoming claims more efficiently:
