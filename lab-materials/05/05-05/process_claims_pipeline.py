@@ -50,7 +50,11 @@ def process_claims_pipeline(claim_ids: int, detection_endpoint: str):
     )
     get_accident_time_task.after(get_claims_task)
     kubernetes.use_field_path_as_env(
+<<<<<<< HEAD
         get_claims_task,
+=======
+        get_accident_time_task,
+>>>>>>> upstream/dev
         env_name='NAMESPACE',
         field_path='metadata.namespace'
     )
@@ -64,7 +68,11 @@ def process_claims_pipeline(claim_ids: int, detection_endpoint: str):
     )
     get_location_task.after(get_claims_task)
     kubernetes.use_field_path_as_env(
+<<<<<<< HEAD
         get_claims_task,
+=======
+        get_location_task,
+>>>>>>> upstream/dev
         env_name='NAMESPACE',
         field_path='metadata.namespace'
     )
@@ -78,7 +86,11 @@ def process_claims_pipeline(claim_ids: int, detection_endpoint: str):
     )
     get_sentiment_task.after(get_claims_task)
     kubernetes.use_field_path_as_env(
+<<<<<<< HEAD
         get_claims_task,
+=======
+        get_sentiment_task,
+>>>>>>> upstream/dev
         env_name='NAMESPACE',
         field_path='metadata.namespace'
     )
@@ -92,7 +104,11 @@ def process_claims_pipeline(claim_ids: int, detection_endpoint: str):
     )
     detect_objects_task.after(get_claims_task)
     kubernetes.use_field_path_as_env(
+<<<<<<< HEAD
         get_claims_task,
+=======
+        detect_objects_task,
+>>>>>>> upstream/dev
         env_name='NAMESPACE',
         field_path='metadata.namespace'
     )
@@ -106,7 +122,11 @@ def process_claims_pipeline(claim_ids: int, detection_endpoint: str):
     )
     summarize_text_task.after(get_claims_task)
     kubernetes.use_field_path_as_env(
+<<<<<<< HEAD
         get_claims_task,
+=======
+        summarize_text_task,
+>>>>>>> upstream/dev
         env_name='NAMESPACE',
         field_path='metadata.namespace'
     )
