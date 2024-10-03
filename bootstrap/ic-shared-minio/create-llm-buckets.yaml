@@ -85,9 +85,6 @@ spec:
           filename = "generation_config.json"
           with open(filename, "rb") as f:
               s3.upload_fileobj(f, "granite", f'granite-7b/{filename}')
-          filename = "tokenizer.model"
-          with open(filename, "rb") as f:
-              s3.upload_fileobj(f, "granite", f'granite-7b/{filename}')
 
           EOF
         envFrom:
