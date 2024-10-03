@@ -34,12 +34,13 @@ spec:
             sleep 5
           done; echo
 
-          MINIO_ROOT_PASSWORD=$(oc get secret minio-root-user -n ic-shared-minio -o template --template '{{.data.MINIO_ROOT_PASSWORD|base64decode}}')
+          export MINIO_ROOT_PASSWORD=$(oc get secret minio-root-user -n ic-shared-minio -o template --template '{{.data.MINIO_ROOT_PASSWORD|base64decode}}')
           echo "Minio pass: $MINIO_ROOT_PASSWORD"
 
           cat << 'EOF' | python3
           import boto3, os, botocore
-
+          print("pass")
+          print(os.getenv("MINIO_ROOT_PASSWORD"))
           s3 = boto3.client("s3",
                             endpoint_url=os.getenv("AWS_S3_ENDPOINT"),
                             aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
