@@ -12,6 +12,7 @@ resources:
 - namespace.yaml
 # wave 1
 - pvc.yaml
+- project-manager.yaml
 - secret.yaml
 - secret-minio.yaml
 - deployment.yaml

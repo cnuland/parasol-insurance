@@ -9,6 +9,8 @@ spec:
   backoffLimit: 4
   template:
     spec:
+      serviceAccount: project-creator
+      serviceAccountName: project-creator
       initContainers:
       - name: wait-for-minio
         image: busybox:1.28
@@ -24,7 +26,16 @@ spec:
         args:
         - -ec
         - |-
-          git clone https://github.com/rh-aiservices-bu/parasol-insurance.git
+          git clone https://github.com/cnuland/parasol-insurance.git
+
+          echo -n 'Waiting for minio-root-user secret'
+          while [ -z "\$(oc get secret -n ic-shared-minio minio-root-user -oname 2>/dev/null)" ]; do
+            echo -n .
+            sleep 5
+          done; echo
+
+          MINIO_ROOT_PASSWORD=$(oc get secret minio-root-user -n ic-shared-minio -o template --template '{{.data.MINIO_ROOT_PASSWORD|base64decode}}')
+          echo "Minio pass: $MINIO_ROOT_PASSWORD"
 
           cat << 'EOF' | python3
           import boto3, os, botocore
@@ -32,7 +43,7 @@ spec:
           s3 = boto3.client("s3",
                             endpoint_url=os.getenv("AWS_S3_ENDPOINT"),
                             aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
-                            aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"))
+                            aws_secret_access_key=os.getenv("MINIO_ROOT_PASSWORD"))
 
           # Create image bucket
           bucket_name = "claim-images"
