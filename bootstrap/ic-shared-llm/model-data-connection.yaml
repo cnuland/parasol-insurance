@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: aws-connection-shared-minio---model
+  labels:
+    opendatahub.io/dashboard: "true"
+    opendatahub.io/managed: "true"
+  annotations:
+    opendatahub.io/connection-type: s3
+    openshift.io/display-name: Shared Minio - model
+type: Opaque
+stringData:
+  AWS_ACCESS_KEY_ID: minio
+  AWS_SECRET_ACCESS_KEY: minio123
+  AWS_DEFAULT_REGION: us
+  AWS_S3_ENDPOINT: http://minio.ic-shared-minio.svc:9000
+  AWS_S3_BUCKET: granite

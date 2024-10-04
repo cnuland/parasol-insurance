@@ -31,7 +31,7 @@ spec:
             - name: INFERENCE_SERVER_URL
               value: http://granite-7b-predictor.$(NAMESPACE).svc.cluster.local:8080/v1
             - name: MODEL_NAME
-              value: 'mistralai/Mistral-7B-Instruct-v0.2'
+              value: 'granite-7b'
             - name: MAX_TOKENS
               value: '512'
             - name: TOP_P
