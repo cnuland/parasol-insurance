@@ -41,7 +41,7 @@ spec:
             sleep 5
           done; echo
 
-          MINIO_ROOT_PASSWORD=$(oc get secret minio-root-user -n ic-shared-minio -o template --template '{{.data.MINIO_ROOT_PASSWORD|base64decode}}')
+          export MINIO_ROOT_PASSWORD=$(oc get secret minio-root-user -n ic-shared-minio -o template --template '{{.data.MINIO_ROOT_PASSWORD|base64decode}}')
           echo "Minio pass: $MINIO_ROOT_PASSWORD"
           # Retrieve the backup from the S3 bucket
           curl -LO https://rhods-public.s3.amazonaws.com/parasol-insurance-handbook-backup/backup.tar.gz
@@ -53,6 +53,8 @@ spec:
           cat << 'EOF' | python3
           import boto3, os, requests
           from pymilvus import MilvusClient
+          print("password")
+          print(os.getenv("MINIO_ROOT_PASSWORD"))
 
           # Connect to the object storage
           s3 = boto3.client("s3",
