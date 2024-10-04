@@ -24,15 +24,17 @@ spec:
       name: ''
       resources:
         limits:
-          cpu: '6'
-          memory: 24Gi
+          cpu: '25'
+          memory: 25Gi
           nvidia.com/gpu: '1'
         requests:
-          cpu: '1'
-          memory: 8Gi
+          cpu: '20'
+          memory: 20Gi
           nvidia.com/gpu: '1'
-      runtime: vllm
-      storageUri: oci://quay.io/rh-aiservices-bu/granite-7b-instruct-modelcar:0.2
+      runtime: granite-7b
+      storage:
+        key: aws-connection-shared-minio---model
+        path: granite-7b
     tolerations:
       - effect: NoSchedule
         key: nvidia.com/gpu

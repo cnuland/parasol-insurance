@@ -29,7 +29,7 @@ spec:
                 fieldRef:
                   fieldPath: metadata.namespace
             - name: INFERENCE_SERVER_URL
-              value: http://llm.ic-shared-llm.svc.cluster.local:8000/v1
+              value: http://granite-7b-predictor.$(NAMESPACE).svc.cluster.local:8080/v1
             - name: MODEL_NAME
               value: 'mistralai/Mistral-7B-Instruct-v0.2'
             - name: MAX_TOKENS
