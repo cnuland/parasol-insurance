@@ -23,23 +23,23 @@
 ** xref:03-06-confidence-check.adoc[3.6 Confidence-check pipeline]
 ** xref:03-07-prompt-engineering.adoc[3.7 Prompt Engineering Exercise (Optional)]
 
-* 4. Image Processing
-** xref:04-01-over-approach.adoc[4.1 Overall Approach]
-** xref:04-02-car-recog.adoc[4.2 Car recognition (Optional)]
-** xref:04-03-model-retraining.adoc[4.3 Model retraining (Optional)]
-** xref:04-04-accident-recog.adoc[4.4 Accident/Damage recognition (Optional)]
-** xref:04-05-model-serving.adoc[4.5 Model Serving]
+* 4. Web App Deployment
+** xref:04-01-application.adoc[5.1 Application overview]
+** xref:04-02-openshift-terminal.adoc[5.2 OpenShift Terminal]
+** xref:04-03-web-app-deploy-application.adoc[5.3 Deploying the application via GitOps]
+** xref:04-04-web-app-validating.adoc[5.4 Validating the application]
+** xref:04-05-process-claims.adoc[5.5 Process claims with a pipeline]
 
-* 5. Web App Deployment
-** xref:05-01-application.adoc[5.1 Application overview]
-** xref:05-02-openshift-terminal.adoc[5.2 OpenShift Terminal]
-** xref:05-03-web-app-deploy-application.adoc[5.3 Deploying the application via GitOps]
-** xref:05-04-web-app-validating.adoc[5.4 Validating the application]
-** xref:05-05-process-claims.adoc[5.5 Process claims with a pipeline]
+* 5. Productization and Extrapolations
+** xref:05-01-potential-imp-ref.adoc[6.1 Potential improvements and refinements]
+** xref:05-02-applicability-other.adoc[6.2 Applicability to other industries]
 
-* 6. Productization and Extrapolations
-** xref:06-01-potential-imp-ref.adoc[6.1 Potential improvements and refinements]
-** xref:06-02-applicability-other.adoc[6.2 Applicability to other industries]
+* 6. Image Processing (Optional)
+** xref:06-01-over-approach.adoc[4.1 Overall Approach]
+** xref:06-02-car-recog.adoc[4.2 Car recognition (Optional)]
+** xref:06-03-model-retraining.adoc[4.3 Model retraining (Optional)]
+** xref:06-04-accident-recog.adoc[4.4 Accident/Damage recognition (Optional)]
+** xref:06-05-model-serving.adoc[4.5 Model Serving]
 
 * 7. End of Lab
 ** xref:07-01-end-of-lab.adoc[7.1 Thanks]

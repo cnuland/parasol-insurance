@@ -28,7 +28,7 @@ a|- We describe what the desired end state looks like.
 - Describe overall user experience and underlying architecture.
 - Share mockups for better visualization
 
-|Connection and Setup |15 | Hands-On
+|Connection and Setup |20 | Hands-On
 a|- Attendees get connected
 - help validate environment health
 - access the playpen project
