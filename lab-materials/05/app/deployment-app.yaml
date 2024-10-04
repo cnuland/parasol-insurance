@@ -82,7 +82,7 @@ spec:
             - name: MILVUS_PASSWORD
               value: Milvus
             - name: SCORE_THRESHOLD
-              value: '0.90'
+              value: '0.00'
             - name: MILVUS_COLLECTION
               value: california_driver_handbook_1_0
             - name: MAX_RETRIEVED_DOCS

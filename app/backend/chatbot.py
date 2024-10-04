@@ -100,11 +100,11 @@ class Chatbot:
             callbacks=[QueueCallback(q, self.logger)],
         )
 
-        conversation_chain = ConversationChain(
-        llm=llm,
-        prompt=self.PROMPT,
-        verbose=True
-        ) 
+        """ conversation_chain = ConversationChain(
+            llm=llm,
+            prompt=self.PROMPT,
+            verbose=True
+        ) """
 
         retriever = MilvusRetrieverWithScoreThreshold(
             embedding_function=self.embeddings,
@@ -142,8 +142,11 @@ class Chatbot:
 
         # Create a function to call - this will run in a thread
         def task():
-            resp = conversation_chain.invoke({"query": query, "question": ""})
-            print(resp)
+            resp = rag_chain.invoke({"query": query, "claim": claim})
+            sources = self.format_sources(resp['source_documents'])
+            if len(sources) != 0:
+                data = {"type": "source", "source": sources}
+                q.put(data)
             q.put(job_done)
 
         # Create a thread and start the function
