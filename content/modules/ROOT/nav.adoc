@@ -28,7 +28,6 @@
 ** xref:04-02-openshift-terminal.adoc[4.2 OpenShift Terminal]
 ** xref:04-03-web-app-deploy-application.adoc[4.3 Deploying the application via GitOps]
 ** xref:04-04-web-app-validating.adoc[4.4 Validating the application]
-** xref:04-05-process-claims.adoc[4.5 Process claims with a pipeline]
 
 * 5. Productization and Extrapolations
 ** xref:05-01-potential-imp-ref.adoc[5.1 Potential improvements and refinements]
