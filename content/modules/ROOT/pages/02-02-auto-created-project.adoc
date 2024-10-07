@@ -8,14 +8,12 @@ In order to give you a feel for what "day 2" experience would be like, we have p
 == Go to your project
 
 * First, in the {rhoai} Dashboard application, navigate to the Data Science Projects menu on the left:
-+
 [.bordershadow]
 image::02/02-02-ds-proj-nav.png[]
 
 * Then, open the project called {user}.
 
 * Inside the project you should see a few items that already have been pre-created:
-+
 [.bordershadow]
 image::02/02-02-pre-created-components.png[]
 
@@ -34,7 +32,6 @@ image::02/02-01-minio.png[]
 
 
 Go to the data science project for your user and select the Models tab. Select the `Deploy model' button under the single model server category.
-+
 [.bordershadow]
 image::02/02-01-deploy-model.png[]
 
@@ -96,13 +93,12 @@ Shared Minio - model
 [subs=attributes+]
 /granite-7b 
 
-+
 [.bordershadow]
 image::02/02-01-deploy-model2.png[]
 +
 [.bordershadow]
 image::02/02-01-deploy-model3.png[]
 
-<b>Click Deploy</b>
+Click Deploy
 
 NOTE: This deployment can take several minutes based on cluster load.
