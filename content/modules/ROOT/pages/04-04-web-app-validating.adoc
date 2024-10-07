@@ -44,4 +44,8 @@ The assistant will open and you can ask it questions about the claim. As we have
 [.bordershadow]
 image::05/new-app-chat.png[]
 
+Lastly, you can ask the chat about about the information that was finetuned into the model during the RHEL AI portion of this workshop.
+It's suggested you frame the question as followed so the assistant knows you are not asking about a claim or data stored in the RAG.
+``
+
 This is still obviously a very simple and crude application, but remember that this was a prototype. And it was enough to show the potential of an AI-Enhanced application to the board, and convince them to invest in the project.
