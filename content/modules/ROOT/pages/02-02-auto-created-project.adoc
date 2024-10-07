@@ -24,3 +24,85 @@ image::02/02-02-pre-created-components.png[]
 2. A Cluster storage - this is a persistent storage for your workbench.
 3. A Data Connection - it contains all the information needed to talk with an existing S3 storage, we use that to store models and pipeline artifacts.
 4. A Pipeline Server - the pipeline server has already been set up here so you can import or run data science pipelines right away.
+
+== Create a Model Server
+Now we need to deploy the Granite 7b model that we trained in RHEL AI. The lab has already been deployed with a data connection that is connected to the S3
+bucket that has the model available local to this OpenShift AI cluster. The below image shows what model artifacts the content of that S3 bucket contains.
++
+[.bordershadow]
+image::02/02-01-minio.png[]
+
+
+Go to the data science project for your user and select the Models tab. Select the `Deploy model' button under the single model server category.
++
+[.bordershadow]
+image::02/02-01-deploy-model.png[]
+
+Enter the following information into the fields.
+
+* Here is the information you need to enter:
+** Name:
+[.lines_space]
+[.console-input]
+[source, text]
+[subs=attributes+]
+granite-7b
+** Serving runtime:
+[.lines_space]
+[.console-input]
+[source, text]
+[subs=attributes+]
+VLLM ServingRuntime for KServe
+** Model framework (name - version):
+[.lines_space]
+[.console-input]
+[source, text]
+[subs=attributes+]
+vLLM
+** Model server replicas:
+[.lines_space]
+[.console-input]
+[source, text]
+[subs=attributes+]
+1
+** Model server size:
+[.lines_space]
+[.console-input]
+[source, text]
+[subs=attributes+]
+Custom (15 CPU Request, 20 CPU Limit. 20 Memory Request, 24 Memory Limit)
+** Number of accelerators:
+[.lines_space]
+[.console-input]
+[source, text]
+[subs=attributes+]
+1
+** Model location:
+[.lines_space]
+[.console-input]
+[source, text]
+[subs=attributes+]
+Existing data connection 
+** Name:
+[.lines_space]
+[.console-input]
+[source, text]
+[subs=attributes+]
+Shared Minio - model 
+** Path:
+[.lines_space]
+[.console-input]
+[source, text]
+[subs=attributes+]
+/granite-7b 
+
++
+[.bordershadow]
+image::02/02-01-deploy-model2.png[]
++
+[.bordershadow]
+image::02/02-01-deploy-model3.png[]
+
+<b>Click Deploy</b>
+
+NOTE: This deployment can take several minutes based on cluster load.
