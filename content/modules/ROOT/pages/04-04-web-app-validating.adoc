@@ -25,6 +25,7 @@ Click on the third item from menu on the left, Claims.
 image::05/claims-link.png[]
 
 You now have a list of all the claims that have been received by the application. You can navigate each claim (click the subject line) and see that the interface is much more user friendly, with a nice interface to navigate the claim and see the pictures that were attached to it.
+For this exercise make sure to use claim CLM202401 involving Marty McFly.
 
 [.bordershadow]
 image::05/new-app-claims.png[]
@@ -45,7 +46,6 @@ The assistant will open and you can ask it questions about the claim. As we have
 image::05/new-app-chat.png[]
 
 Lastly, you can ask the chat about about the information that was finetuned into the model during the RHEL AI portion of this workshop.
-It's suggested you frame the question as followed so the assistant knows you are not asking about a claim or data stored in the RAG.
-``
+`How much does it cost to replace a flux capacitor on a DeLorean DMC-12 in millions of dollars.`
 
 This is still obviously a very simple and crude application, but remember that this was a prototype. And it was enough to show the potential of an AI-Enhanced application to the board, and convince them to invest in the project.
