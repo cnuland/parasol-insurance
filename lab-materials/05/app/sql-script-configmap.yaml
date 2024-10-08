@@ -152,15 +152,15 @@ data:
     marty-likes-to-fly@email.com
     ',
     '
-    On January 2, 2024, at around 3:30 PM, a car accident occurred at the intersection of Birch Street and Willow Avenue in Evergreen. The involved parties were Sarah Turner, driving a black Toyota Camry (DEF-456), and Daniel Reynolds in a blue Chevrolet Traverse (GHI-789).
+    On January 2, 2024, at around 3:30 PM, a car accident occurred at the intersection of Birch Street and Willow Avenue in Hill Valley. The involved parties were Marty McFly, driving a DeLorean DMC-12, and Daniel Reynolds in a blue Chevrolet Traverse (GHI-789).
 
-    Sarah was heading south on Birch Street when Daniel failed to stop at the red traffic signal on Willow Avenue, causing a collision with Sarah''s vehicle. Both drivers exchanged information and took photos of the accident scene, which included damages to the front passenger side of Sarah''s Toyota Camry and the front driver''s side of Daniel''s Chevrolet Traverse. No injuries were reported.
+    Marty was heading south on Birch Street when Daniel failed to stop at the red traffic signal on Willow Avenue, causing a collision with Sarah''s vehicle. Both drivers exchanged information and took photos of the accident scene, which included damages to the front passenger side of Marty''s DeLorean DMC-12 and the front driver''s side of Daniel''s Chevrolet Traverse. No injuries were reported.
 
-    Sarah has attached necessary documents, such as photos, a police report, and an estimate for repair costs, to her email. She requests prompt attention to the claim and is available at (555) 123-4567 or sarah.turner@email.com for any additional information or documentation needed.
+    Sarah has attached necessary documents, such as photos, a police report, and an estimate for repair costs, to her email. She requests prompt attention to the claim and is available at (555) 123-4567 or marty-likes-to-fly@email.com for any additional information or documentation needed.
     ',
-    'Intersection of Birch Street and Willow Avenue in the city of Evergreen',
+    'Intersection of Birch Street and Willow Avenue in the city of Hill Valley',
     'January 2nd, 2024, at approximately 3:30 PM',
-    'The sender, Sarah Turner, expresses a polite and professional tone in her email. She is respectful and detailed in her description of the car accident and the subsequent steps she took to file a claim. She requests prompt attention to the matter and provides all necessary documentation. Overall, her sentiment is one of being proactive and cooperative in the claims process.'
+    'The sender, Marty McFly, expresses a polite and professional tone in his email. He is respectful and detailed in his description of the car accident and the subsequent steps he took to file a claim. He requests prompt attention to the matter and provides all necessary documentation. Overall, his sentiment is one of being proactive and cooperative in the claims process.'
     );
 
     -- CLAIM2
