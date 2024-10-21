@@ -468,7 +468,7 @@ metadata:
   name: clone-repo
   namespace: $USER_PROJECT
 spec:
-  backoffLimit: 4
+  backoffLimit: 20
   template:
     spec:
       serviceAccount: demo-setup
@@ -481,6 +481,7 @@ spec:
         args:
         - -ec
         - |-
+          sleep 5m
           echo -n "Waiting for workbench pod in $USER_PROJECT namespace"
           while [ -z "\$(oc get pods -n $USER_PROJECT -l app=$WORKBENCH_NAME -o custom-columns=STATUS:.status.phase --no-headers | grep Running 2>/dev/null)" ]; do
               echo -n '.'
@@ -495,7 +496,7 @@ spec:
         args:
         - -ec
         - |-
-          pod_name=\$(oc get pods --selector=app=$WORKBENCH_NAME -o jsonpath='{.items[0].metadata.name}') && oc exec \$pod_name -- git clone https://github.com/rh-aiservices-bu/parasol-insurance
+          pod_name=\$(oc get pods --selector=app=$WORKBENCH_NAME -o jsonpath='{.items[0].metadata.name}') && oc exec \$pod_name -- git clone https://github.com/cnuland/parasol-insurance
       restartPolicy: Never
 EOF
 
