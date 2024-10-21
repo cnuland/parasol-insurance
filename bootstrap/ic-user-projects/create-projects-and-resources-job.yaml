@@ -520,7 +520,7 @@ spec:
             name: clone-repo
             namespace: $USER_PROJECT
           spec:
-            backoffLimit: 4
+            backoffLimit: 20
             template:
               spec:
                 serviceAccount: demo-setup
@@ -533,6 +533,7 @@ spec:
                   args:
                   - -ec
                   - |-
+                    sleep 3m
                     echo -n "Waiting for workbench pod in $USER_PROJECT namespace"
                     while [ -z "\$(oc get pods -n $USER_PROJECT -l app=$WORKBENCH_NAME -o custom-columns=STATUS:.status.phase --no-headers | grep Running 2>/dev/null)" ]; do
                         echo -n '.'
