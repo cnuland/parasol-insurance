@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: create-llm-buckets
+  name: create-granite-bucket
   annotations:
     argocd.argoproj.io/sync-wave: "3"
     argocd.argoproj.io/hook: Sync
@@ -85,6 +85,107 @@ spec:
           filename = "generation_config.json"
           with open(filename, "rb") as f:
               s3.upload_fileobj(f, "granite", f'granite-7b/{filename}')
+
+          EOF
+        envFrom:
+        - secretRef:
+            name: aws-connection-minio
+      restartPolicy: Never
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: create-granite-3-bucket
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+spec:
+  backoffLimit: 4
+  template:
+    spec:
+      serviceAccount: minio-manage
+      serviceAccountName: minio-manage
+      initContainers:
+      - name: wait-for-minio
+        image: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/bash"]
+        args:
+        - -ec
+        - |-
+          echo -n "Waiting for minio pod in ic-shared-minio namespace"
+          while [ -z "$(oc get pod -n ic-shared-minio -l app=minio -o name 2>/dev/null)" ]; do
+              echo -n '.'
+              sleep 1
+          done
+          echo "Minio pod is running in ic-shared-minio namespace"
+      containers:
+      - name: add-model
+        image: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/s2i-generic-data-science-notebook:1.2
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/bash"]
+        args:
+        - -ec
+        - |-
+          curl -LO https://rhods-public.s3.amazonaws.com/demo-models/granite-3-8b/model-00001-of-00004.safetensors
+          curl -LO https://rhods-public.s3.amazonaws.com/demo-models/granite-3-8b+/model-00002-of-00004.safetensors
+          curl -LO https://rhods-public.s3.amazonaws.com/demo-models/granite-3-8b/model-00003-of-00004.safetensors
+          curl -LO https://rhods-public.s3.amazonaws.com/demo-models/granite-3-8b/model-00004-of-00004.safetensors
+          curl -LO https://rhods-public.s3.amazonaws.com/demo-models/granite-3-8b/config.json
+          curl -LO https://rhods-public.s3.amazonaws.com/demo-models/granite-3-8b/generation_config.json
+          curl -LO https://rhods-public.s3.amazonaws.com/demo-models/granite-3-8b/special_tokens_map.json
+          curl -LO https://rhods-public.s3.amazonaws.com/demo-models/granite-3-8b/tokenizer_config.json
+          curl -LO https://rhods-public.s3.amazonaws.com/demo-models/granite-3-8b/model.safetensors.index.json
+          curl -LO https://rhods-public.s3.amazonaws.com/demo-models/granite-3-8b/tokenizer.json
+          curl -LO https://rhods-public.s3.amazonaws.com/demo-models/granite-3-8b/vocab.json
+          cat << 'EOF' | python3
+          import boto3, os
+
+          s3 = boto3.client("s3",
+                            endpoint_url=os.getenv("AWS_S3_ENDPOINT"),
+                            aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
+                            aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"))
+
+          # Create the models bucket
+          models_bucket_name = "granite"
+          if models_bucket_name not in [bu["Name"] for bu in s3.list_buckets()["Buckets"]]:
+              s3.create_bucket(Bucket=models_bucket_name)
+
+          # uploading to minio
+          filename = "model-00001-of-00004.safetensors"
+          with open(filename, "rb") as f:
+              s3.upload_fileobj(f, "granite", f'granite-3b-7b/{filename}')
+          filename = "model-00002-of-00004.safetensors"
+          with open(filename, "rb") as f:
+              s3.upload_fileobj(f, "granite",f'granite-3b-7b/{filename}')
+          filename = "model-00003-of-00004.safetensors"
+          with open(filename, "rb") as f:
+              s3.upload_fileobj(f, "granite", f'granite-3b-7b/{filename}')
+          filename = "model-00004-of-00004.safetensors"
+          with open(filename, "rb") as f:
+              s3.upload_fileobj(f, "granite", f'granite-3b-7b/{filename}')
+          filename = "config.json"
+          with open(filename, "rb") as f:
+              s3.upload_fileobj(f, "granite", f'granite-3b-7b/{filename}')
+          filename = "special_tokens_map.json"
+          with open(filename, "rb") as f:
+              s3.upload_fileobj(f, "granite", f'granite-3b-7b/{filename}')
+          filename = "tokenizer_config.json"
+          with open(filename, "rb") as f:
+              s3.upload_fileobj(f, "granite", f'granite-3b-7b/{filename}')
+          filename = "tokenizer.json"
+          with open(filename, "rb") as f:
+              s3.upload_fileobj(f, "granite", f'granite-3b-7b/{filename}')
+          filename = "model.safetensors.index.json"
+          with open(filename, "rb") as f:
+              s3.upload_fileobj(f, "granite", f'granite-3b-7b/{filename}')
+          filename = "generation_config.json"
+          with open(filename, "rb") as f:
+              s3.upload_fileobj(f, "granite", f'granite-3b-7b/{filename}')
+          filename = "vocab.json"
+          with open(filename, "rb") as f:
+              s3.upload_fileobj(f, "granite", f'granite-3b-7b/{filename}')
 
           EOF
         envFrom:
