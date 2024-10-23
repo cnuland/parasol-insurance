@@ -155,37 +155,37 @@ spec:
           # uploading to minio
           filename = "model-00001-of-00004.safetensors"
           with open(filename, "rb") as f:
-              s3.upload_fileobj(f, "granite", f'granite-3b-7b/{filename}')
+              s3.upload_fileobj(f, "granite", f'granite-3-7b/{filename}')
           filename = "model-00002-of-00004.safetensors"
           with open(filename, "rb") as f:
-              s3.upload_fileobj(f, "granite",f'granite-3b-7b/{filename}')
+              s3.upload_fileobj(f, "granite",f'granite-3-7b/{filename}')
           filename = "model-00003-of-00004.safetensors"
           with open(filename, "rb") as f:
-              s3.upload_fileobj(f, "granite", f'granite-3b-7b/{filename}')
+              s3.upload_fileobj(f, "granite", f'granite-3-7b/{filename}')
           filename = "model-00004-of-00004.safetensors"
           with open(filename, "rb") as f:
-              s3.upload_fileobj(f, "granite", f'granite-3b-7b/{filename}')
+              s3.upload_fileobj(f, "granite", f'granite-3-7b/{filename}')
           filename = "config.json"
           with open(filename, "rb") as f:
-              s3.upload_fileobj(f, "granite", f'granite-3b-7b/{filename}')
+              s3.upload_fileobj(f, "granite", f'granite-3-7b/{filename}')
           filename = "special_tokens_map.json"
           with open(filename, "rb") as f:
-              s3.upload_fileobj(f, "granite", f'granite-3b-7b/{filename}')
+              s3.upload_fileobj(f, "granite", f'granite-3-7b/{filename}')
           filename = "tokenizer_config.json"
           with open(filename, "rb") as f:
-              s3.upload_fileobj(f, "granite", f'granite-3b-7b/{filename}')
+              s3.upload_fileobj(f, "granite", f'granite-3-7b/{filename}')
           filename = "tokenizer.json"
           with open(filename, "rb") as f:
-              s3.upload_fileobj(f, "granite", f'granite-3b-7b/{filename}')
+              s3.upload_fileobj(f, "granite", f'granite-3-7b/{filename}')
           filename = "model.safetensors.index.json"
           with open(filename, "rb") as f:
-              s3.upload_fileobj(f, "granite", f'granite-3b-7b/{filename}')
+              s3.upload_fileobj(f, "granite", f'granite-3-7b/{filename}')
           filename = "generation_config.json"
           with open(filename, "rb") as f:
-              s3.upload_fileobj(f, "granite", f'granite-3b-7b/{filename}')
+              s3.upload_fileobj(f, "granite", f'granite-3-7b/{filename}')
           filename = "vocab.json"
           with open(filename, "rb") as f:
-              s3.upload_fileobj(f, "granite", f'granite-3b-7b/{filename}')
+              s3.upload_fileobj(f, "granite", f'granite-3-7b/{filename}')
 
           EOF
         envFrom:
