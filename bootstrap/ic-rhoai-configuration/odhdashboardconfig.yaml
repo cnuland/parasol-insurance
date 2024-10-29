@@ -15,6 +15,14 @@ spec:
         requests:
           cpu: '1'
           memory: 1Gi
+    - name: LLM
+      resources:
+        limits:
+          cpu: '14'
+          memory: 24Gi
+        requests:
+          cpu: '10'
+          memory: 20Gi
   notebookController:
     enabled: true
     notebookNamespace: rhods-notebooks
@@ -28,6 +36,14 @@ spec:
         requests:
           cpu: '1'
           memory: 6Gi
+    - name: LLM
+      resources:
+        limits:
+          cpu: '14'
+          memory: 24Gi
+        requests:
+          cpu: '10'
+          memory: 20Gi
   templateOrder: []
 
 
