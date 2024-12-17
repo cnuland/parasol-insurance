@@ -32,6 +32,36 @@ spec:
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
+  name: image-puller-workbench-ilab
+  namespace: rhods-notebooks
+  labels:
+    k8s-app: image-puller
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  selector:
+    matchLabels:
+      name: image-puller
+  template:
+    metadata:
+      labels:
+        name: image-puller
+    spec:
+      containers:
+      - name: ic-workbench-lab
+        image: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/ic-workbench-ilab:0.21.0
+        command: ["tail"]
+        args: ["-f", "/dev/null"]
+        resources:
+          limits:
+            memory: 20Mi
+          requests:
+            cpu: 10m
+            memory: 10Mi
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
   name: image-puller-ovms
   namespace: rhods-notebooks
   labels:
